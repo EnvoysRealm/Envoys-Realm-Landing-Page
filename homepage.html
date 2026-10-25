@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoy's Links</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Asap:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://envoys-realm.github.io/Shared-API-Header/shared-header.css">
+
+    <link rel="stylesheet" href="assets/css/links_style.css"> <link rel="stylesheet" href="assets/css/theme.css">
+
+    <style>
+        /* Keep minimal essential styles if needed, e.g., body background */
+        body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            background: #000000; /* Base background */
+            margin: 0;
+            padding: 0;
+            cursor: default;
+            /* Default text color set by themes via html.dark/html.light */
+            font-family: 'Asap', sans-serif;
+        }
+        #threejs-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; overflow: hidden;
+        }
+        #threejs-bg canvas { display: block; }
+
+        /* Keep page-specific styles like title glow if not moved to theme.css */
+        .font-pirata { font-family: 'Pirata One', cursive; }
+        .title-glow {
+            font-size: 5rem; line-height: 1;
+            /* Glows might be better handled by theme CSS */
+            text-shadow: 0 0 5px rgba(255, 100, 100, 0.8), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 18px rgba(138, 43, 226, 0.6), 0 0 25px rgba(75, 0, 130, 0.5);
+            z-index: 1; animation: text-flicker 3s linear infinite alternate; color: #dc2626; text-align: center; white-space: nowrap;
+        }
+        @keyframes text-flicker {
+             0%, 10%, 12%, 20%, 22%, 30%, 32%, 40%, 42%, 50%, 52%, 60%, 62%, 70%, 72%, 80%, 82%, 90%, 92%, 100% { text-shadow: 0 0 5px rgba(255, 100, 100, 0.8), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 18px rgba(138, 43, 226, 0.6), 0 0 25px rgba(75, 0, 130, 0.5); opacity: 1; }
+             11%, 21%, 31%, 41%, 51%, 61%, 71%, 81%, 91% { text-shadow: 0 0 4px rgba(255, 100, 100, 0.6), 0 0 8px rgba(255, 0, 0, 0.5), 0 0 15px rgba(138, 43, 226, 0.4), 0 0 20px rgba(75, 0, 130, 0.3); opacity: 0.95; }
+        }
+         @media (max-width: 768px) { .title-glow { font-size: 3rem; } }
+
+        /* Keep initial loader styles */
+         #initial-loader { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; color: #d1d5db; transition: opacity 0.5s ease-out; }
+         #initial-loader.hidden { opacity: 0; pointer-events: none; }
+
+         /* Keep audio player styles if needed */
+         #audio-player-container { position: fixed; bottom: 20px; right: 20px; z-index: 50; }
+
+    </style>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+</head>
+<body class=""> <div id="initial-loader">
+        <div class="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-purple-500 mb-6"></div>
+        <p class="text-xl">Loading Envoy's Links...</p>
+    </div>
+
+    <div id="threejs-bg"></div>
+    <div class="cursor-light"></div>
+
+    <div id="shared-header-placeholder">
+        <div style="padding: 1rem; text-align: center; background-color:#1a1120; color:#e0e0e0; height: 56px; display: flex; align-items: center; justify-content: center;">Loading Header...</div>
+    </div>
+    <main class="relative pt-10 pb-16 px-4 md:px-8 lg:px-16 z-0"> <h1 class="font-pirata text-red-600 text-center title-glow mb-16">
+            Project Directory
+        </h1>
+        <div class="carousel-container relative w-full h-[550px] flex items-center justify-center">
+            <div class="cards-wrapper">
+                <div class="cards-container">
+                     <div class="text-center text-gray-400 p-10">Loading projects...</div>
+                </div>
+            </div>
+        </div>
+        </main>
+
+    <div id="audio-player-container">
+        <div class="bg-purple-900 bg-opacity-70 backdrop-blur-sm text-white p-3 rounded-lg shadow-lg border border-red-500 border-opacity-50">
+            <p class="text-sm font-semibold mb-1">Music Player</p>
+            <button class="text-xs bg-red-600 hover:bg-red-700 px-2 py-1 rounded">Play</button>
+            </div>
+    </div>
+
+
+    <script>
+        // Keep App namespace initialization if links_page.js or other scripts rely on it
+        window.App = window.App || {};
+        console.log("HTML: Initialized window.App namespace.");
+    </script>
+
+    <script src="assets/js/background.js" defer></script>
+    <script src="assets/js/links_page.js" defer></script> <script src="assets/js/audio_player.js" defer></script>
+
+    <script src="https://envoys-realm.github.io/Shared-API-Header/render-header.js" defer></script>
+    </body>
+</html>

@@ -1,0 +1,6 @@
+    // --- Audio Management ---
+    // IMPORTANT: Ensure paths are correct!
+    const backgroundMusic = new Audio('./assets/music/Pokemon RedBlue - Pokemon tower (slowed reverb).mp3');
+    const raveMusic = new Audio('./assets/music/Pokemon BlueRed - Bicycle Theme.mp3');
+    const tvShutoffSound = new Audio('./assets/sounds/tv_shutoff.mp3');
+    const tvStaticSound = new Audio('./assets/sounds/tv_static.mp3');

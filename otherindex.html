@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoy's Realm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Applying the Pirata One font */
+        .font-pirata {
+            font-family: 'Pirata One', cursive;
+        }
+
+        /* Base body styling */
+        body {
+            overflow: hidden; position: relative; width: 100vw; height: 100vh;
+            background: #111; /* Fallback background */
+            margin: 0; padding: 0; cursor: default;
+        }
+
+        /* Three.js Background Container */
+        #threejs-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -10; /* Deepest layer */
+            overflow: hidden;
+        }
+        #threejs-bg canvas {
+             display: block; /* Prevent extra space */
+        }
+
+        /* New Top UI Container */
+         #top-ui-container {
+             position: relative; /* Positioned relative to body flow */
+             z-index: 1; /* Above background */
+             width: 100%;
+             padding: 2rem 1rem; /* Padding top/bottom and sides */
+             display: flex;
+             flex-direction: column;
+             align-items: center; /* Center items horizontally */
+             gap: 1.5rem; /* Space between elements */
+             /* Ensure clicks pass through container unless on an element */
+             pointer-events: none;
+         }
+         /* Allow pointer events on direct children */
+          #top-ui-container > * {
+              pointer-events: auto;
+          }
+
+
+        /* --- Dark Pokéball Styling --- */
+        .horror-ball-wrapper {
+             position: relative; width: 150px; height: 150px;
+             cursor: pointer;
+             /* margin-bottom removed, using gap now */
+             z-index: 1;
+        }
+        @keyframes wobble {
+             0%, 100% { transform: translateX(0%) rotate(0deg); transform-origin: 50% 50%; }
+             15% { transform: translateX(-20px) rotate(-6deg); }
+             30% { transform: translateX(10px) rotate(6deg); }
+             45% { transform: translateX(-10px) rotate(-3.6deg); }
+             60% { transform: translateX(6px) rotate(2.4deg); }
+             75% { transform: translateX(-4px) rotate(-1.2deg); }
+        }
+        .horror-ball {
+            width: 100%; height: 100%; border-radius: 50%;
+            background: radial-gradient(circle at 50% 100%, #4a4a4a, #1a1a1a);
+            border: 4px solid #111; overflow: hidden; position: relative;
+            animation: wobble 3s infinite both;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 2;
+            /* Enhanced inset shadow for depth */
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.6),
+                        inset 0 -3px 5px rgba(0,0,0,0.4);
+        }
+        .horror-ball::before { /* Top half */
+             content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+             background: radial-gradient(circle at 50% 0%, #6e0000, #1a0000);
+             border-bottom: 4px solid #111; border-radius: 75px 75px 0 0 / 75px 75px 0 0;
+             z-index: 1;
+        }
+        .horror-ball::after { /* Center button */
+             content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+             width: 35px; height: 35px; border-radius: 50%;
+             background: radial-gradient(circle at 30% 30%, #555, #111); border: 6px solid #222;
+             /* Added inner shadow to button */
+             box-shadow: 0 0 0 4px #111, inset 0 2px 3px rgba(0,0,0,0.5), inset 0 0 8px rgba(138, 43, 226, 0.7);
+             z-index: 3;
+        }
+        .horror-ball:hover {
+             box-shadow: inset 0 5px 15px rgba(0,0,0,0.7), inset 0 -3px 5px rgba(0,0,0,0.5),
+                         0 0 10px rgba(138, 43, 226, 0.3);
+        }
+        @keyframes pokeball-shake {
+             0%, 100% { transform: translateX(0) rotate(0); }
+             15% { transform: translateX(-5px) rotate(-8deg); }
+             30% { transform: translateX(5px) rotate(8deg); }
+             45% { transform: translateX(-5px) rotate(-8deg); }
+             60% { transform: translateX(5px) rotate(8deg); }
+             75% { transform: translateX(-3px) rotate(-5deg); }
+             90% { transform: translateX(3px) rotate(5deg); }
+        }
+
+        /* --- Button Styling (Restored v5 style) --- */
+        .hell-button {
+            background: linear-gradient(to bottom right, #991b1b, #7f1d1d, #581c87);
+            position: relative; z-index: 1;
+            transition: transform 0.15s ease, background 0.3s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+            border: 3px solid #4B0082;
+            /* Added inset shadow for depth */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6),
+                        inset 0 2px 4px rgba(0, 0, 0, 0.4),
+                        inset 0 -2px 3px rgba(255,100,100,0.1), /* Subtle inner highlight */
+                        0 0 8px rgba(138, 43, 226, 0.2);
+            color: white; /* White text */
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.5), /* Dark edge for contrast */
+                         0 0 6px rgba(255, 0, 0, 0.7),
+                         0 0 10px rgba(138, 43, 226, 0.6);
+            padding: 10px 20px;
+            display: block; /* Needed for anchor styling */
+            width: fit-content; /* Fit content */
+        }
+        .hell-button:hover {
+            transform: scale(1.03) translateY(-2px);
+            background: linear-gradient(to bottom right, #b91c1c, #991b1b, #6b21a8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8), inset 0 2px 4px rgba(0, 0, 0, 0.5), inset 0 -2px 3px rgba(255,150,150,0.15), 0 0 15px rgba(138, 43, 226, 0.4);
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.4), 0 0 8px rgba(255, 0, 0, 0.9), 0 0 14px rgba(138, 43, 226, 0.8);
+        }
+        .hell-button.clicked { animation: button-click-press 0.15s ease-out; }
+        @keyframes button-click-press {
+            0% { transform: scale(1.0) translateY(0px); }
+            50% { transform: scale(0.98) translateY(1px); }
+            100% { transform: scale(1.0) translateY(0px); }
+        }
+        .hell-button:active {
+            transform: scale(0.98) translateY(1px);
+            background: linear-gradient(to bottom right, #7f1d1d, #581c87, #4B0082);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6), inset 0 3px 6px rgba(0, 0, 0, 0.6), inset 0 -2px 3px rgba(255,50,50,0.1), 0 0 10px rgba(138, 43, 226, 0.3);
+            text-shadow: 0 0 1px rgba(0, 0, 0, 0.6), 0 0 6px rgba(255, 0, 0, 0.6), 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+
+         /* Title Glow & Flicker */
+         .title-glow {
+             text-shadow: 0 0 5px rgba(255, 100, 100, 0.8), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 18px rgba(138, 43, 226, 0.6), 0 0 25px rgba(75, 0, 130, 0.5);
+             z-index: 1; position: relative;
+             animation: text-flicker 3s linear infinite alternate;
+         }
+         @keyframes text-flicker { /* ... */ }
+
+         /* Ensure foreground elements stack correctly */
+         h1, .horror-ball-wrapper, a.hell-button {
+             position: relative;
+             z-index: 1;
+         }
+
+    </style>
+</head>
+<body class="bg-black text-gray-300">
+
+    <div id="threejs-bg"></div>
+
+    <div id="top-ui-container">
+
+        <h1 class="font-pirata text-6xl md:text-8xl text-red-600 text-center title-glow">
+            Envoy's Realm
+        </h1>
+
+        <div class="horror-ball-wrapper" title="What's inside?">
+             <div class="horror-ball">
+                </div>
+        </div>
+
+        <a href="#homepage"
+           id="hell-button"
+           class="hell-button font-pirata text-4xl md:text-6xl px-10 py-5 rounded-lg shadow-lg text-center block">
+            Welcome to Hell
+        </a>
+
+    </div> <script>
+        // --- Three.js Clouds Code (Adapted for Subtlety & Theme) ---
+        (function() {
+            'use strict';
+            var scene, camera, renderer;
+            var container, HEIGHT, WIDTH, fieldOfView, aspectRatio, nearPlane, farPlane;
+            var geometry, particleCount, i, h, color, size, materials = [], mouseX = 0, mouseY = 0;
+            var windowHalfX, windowHalfY, cameraZ, fogHex, fogDensity, parameters = {}, parameterCount, particles;
+
+            // --- Parameters for Theme ---
+            const BACKGROUND_COLOR = 0x0a0514; // Darker purple/black base
+            const FOG_COLOR = 0x0a0514;
+            const FOG_DENSITY = 0.001; // Slightly denser fog
+            const PARTICLE_COUNT = 10000; // Fewer particles for subtlety
+            const PARTICLE_PARAMS = [
+                // Hue (0-1), Saturation (0-1), Lightness (0-1) | Size
+                // Dark reds (hue ~0 or ~0.95-1) and purples (hue ~0.75-0.85)
+                // Low lightness values (0.1-0.2)
+                [[0.95, 0.6, 0.2], 3],   // Dark Reddish-Purple
+                [[0.80, 0.6, 0.15], 2.5], // Dark Purple
+                [[0.0,  0.6, 0.15], 2.5], // Dark Red
+                [[0.85, 0.5, 0.1], 2],   // Very Dark Purple
+                [[0.98, 0.5, 0.1], 2]    // Very Dark Red
+            ];
+            const CAMERA_Z = 1000;
+            const ROTATION_SPEED_MULTIPLIER = 0.000015; // Slower rotation
+            const BREATHING_INTENSITY = 25; // Less intense breathing
+            const BREATHING_SPEED = 0.0001; // Slower breathing
+
+            function initThreeJS() {
+                try {
+                    container = document.getElementById('threejs-bg');
+                    if (!container) { console.error("Three.js container not found."); return; }
+
+                    HEIGHT = window.innerHeight; WIDTH = window.innerWidth;
+                    windowHalfX = WIDTH / 2; windowHalfY = HEIGHT / 2;
+                    fieldOfView = 75; aspectRatio = WIDTH / HEIGHT; nearPlane = 1; farPlane = 3000;
+                    cameraZ = CAMERA_Z; fogHex = FOG_COLOR; fogDensity = FOG_DENSITY;
+
+                    camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
+                    camera.position.z = cameraZ;
+
+                    scene = new THREE.Scene();
+                    scene.fog = new THREE.FogExp2(fogHex, fogDensity);
+
+                    geometry = new THREE.BufferGeometry();
+                    const positions = []; particleCount = PARTICLE_COUNT;
+                    for (i = 0; i < particleCount; i++) { const x = Math.random() * 2000 - 1000; const y = Math.random() * 2000 - 1000; const z = Math.random() * 2000 - 1000; positions.push(x, y, z); }
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+                    parameters = PARTICLE_PARAMS; parameterCount = parameters.length; materials = [];
+                    for (i = 0; i < parameterCount; i++) {
+                        color = parameters[i][0]; size = parameters[i][1];
+                        materials[i] = new THREE.PointsMaterial({
+                            size: size, vertexColors: false,
+                            // Use NormalBlending for less overwhelming brightness
+                            blending: THREE.NormalBlending,
+                            transparent: true, opacity: 0.6 // Adjust opacity
+                        });
+                        particles = new THREE.Points(geometry, materials[i]);
+                        particles.rotation.x = Math.random() * 6; particles.rotation.y = Math.random() * 6; particles.rotation.z = Math.random() * 6;
+                        scene.add(particles);
+                    }
+
+                    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                    renderer.setPixelRatio(window.devicePixelRatio); renderer.setSize(WIDTH, HEIGHT);
+                    // Set clear color alpha to 0 to see body background if needed, or set to BG_COLOR
+                    renderer.setClearColor(BACKGROUND_COLOR, 1);
+                    container.appendChild(renderer.domElement);
+
+                    window.addEventListener('resize', onWindowResize, false);
+                    document.addEventListener('mousemove', onDocumentMouseMove, false);
+                    document.addEventListener('touchstart', onDocumentTouchStart, { passive: false });
+                    document.addEventListener('touchmove', onDocumentTouchMove, { passive: false });
+
+                    animate();
+                } catch(e) { console.error("Error initializing Three.js:", e); if (container) container.style.background = '#111'; }
+            }
+            function animate() { requestAnimationFrame(animate); renderThreeJS(); }
+            function renderThreeJS() {
+                try {
+                    const time = Date.now() * ROTATION_SPEED_MULTIPLIER; // Slower time multiplier
+                    // Breathing effect
+                    camera.position.z = cameraZ + Math.sin(Date.now() * BREATHING_SPEED) * BREATHING_INTENSITY;
+                    // Mouse follow
+                    camera.position.x += (mouseX - camera.position.x) * 0.02; // Slower follow
+                    camera.position.y += (-mouseY - camera.position.y) * 0.02;
+                    camera.lookAt(scene.position);
+                    // Rotation
+                    for (i = 0; i < scene.children.length; i++) { const object = scene.children[i]; if (object instanceof THREE.Points) { object.rotation.y = time * (i < (parameterCount/2) ? i + 1 : -(i + 1)); } }
+                    // Color update
+                    for (i = 0; i < materials.length; i++) { color = parameters[i][0]; h = (360 * (color[0] + time * 3) % 360) / 360; materials[i].color.setHSL(h, color[1], color[2]); } // Slower color cycle maybe?
+                    if (renderer) { renderer.render(scene, camera); }
+                } catch(e) { console.error("Error during Three.js render:", e); }
+            }
+            function onDocumentMouseMove(e) { mouseX = e.clientX - windowHalfX; mouseY = e.clientY - windowHalfY; }
+            function onDocumentTouchStart(e) { if (e.touches.length === 1) { e.preventDefault(); mouseX = e.touches[0].pageX - windowHalfX; mouseY = e.touches[0].pageY - windowHalfY; } }
+            function onDocumentTouchMove(e) { if (e.touches.length === 1) { e.preventDefault(); mouseX = e.touches[0].pageX - windowHalfX; mouseY = e.touches[0].pageY - windowHalfY; } }
+            function onWindowResize() { try { windowHalfX = window.innerWidth / 2; windowHalfY = window.innerHeight / 2; camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); if (renderer) renderer.setSize(window.innerWidth, window.innerHeight); } catch(e) { console.error("Error on window resize:", e); } }
+
+             if (typeof THREE !== 'undefined') { initThreeJS(); }
+             else { console.error("Three.js library not loaded."); const bgContainer = document.getElementById('threejs-bg'); if (bgContainer) bgContainer.style.background = '#111'; }
+        })();
+    </script>
+
+    <script>
+        // --- Pokéball Click Interaction ---
+        console.log("Envoy's Realm landing page loaded (Top UI Layout).");
+        const horrorBallWrapper = document.querySelector('.horror-ball-wrapper');
+        const horrorBall = document.querySelector('.horror-ball');
+        if (horrorBallWrapper && horrorBall) {
+             horrorBallWrapper.addEventListener('click', () => {
+                console.log('Horror ball clicked!');
+                if (horrorBall.style.animationName === 'pokeball-shake') return;
+                const defaultAnimation = 'wobble 3s infinite both';
+                horrorBall.style.animation = 'pokeball-shake 1.5s ease-in-out';
+                setTimeout(() => {
+                    if (horrorBall.style.animationName === 'pokeball-shake') {
+                         horrorBall.style.animation = defaultAnimation;
+                    }
+                }, 1500);
+            });
+        } else { console.warn("Pokeball wrapper or ball element not found for click listener."); }
+
+        // --- Button Click Animation ---
+        const hellButton = document.getElementById('hell-button');
+        if (hellButton) {
+            hellButton.addEventListener('click', (e) => {
+                console.log('Button clicked!');
+                hellButton.classList.add('clicked');
+                setTimeout(() => { hellButton.classList.remove('clicked'); }, 150);
+            });
+        } else { console.warn("Hell button element not found for click listener."); }
+    </script>
+</body>
+</html>

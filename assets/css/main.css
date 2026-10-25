@@ -1,0 +1,149 @@
+/* Main.css */
+/* Base Styles */
+.font-pirata {
+    font-family: 'Pirata One', cursive;
+}
+
+body {
+    overflow: hidden;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: #000000; /* Base black */
+    margin: 0;
+    padding: 0;
+    cursor: default;
+    color: #d1d5db; /* Default text color (text-gray-300) */
+}
+
+/* Three.js Background Container */
+#threejs-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    overflow: hidden;
+}
+
+#threejs-bg canvas {
+    display: block;
+}
+
+/* Top UI Container */
+#top-ui-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 90%; /* Constrain width */
+    max-width: 600px; /* Max width */
+    z-index: 1;
+    pointer-events: none; /* Allow clicks through container */
+}
+
+#top-ui-container > * {
+    pointer-events: auto; /* Enable events on children */
+}
+
+/* --- Styles for Dynamically Added Elements --- */
+
+/* --- TV Shutdown Overlay Style --- */
+#tv-shutdown-overlay {
+   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+   background-color: white; z-index: 9999; pointer-events: none;
+   opacity: 0; /* Initially hidden */
+   clip-path: inset(0% 0% 0% 0%); /* Start fully open */
+   /* Transition for flash (opacity) then close (clip-path) */
+   transition: opacity 0.05s linear, clip-path 0.2s ease-in 0.05s; /* Fast flash, slightly faster close, delayed clip-path */
+}
+#tv-shutdown-overlay.active {
+    opacity: 1;
+    clip-path: inset(50% 0% 50% 0%); /* Close to horizontal line */
+}
+
+/* --- Audio Prompt Style --- */
+#audio-prompt {
+   position: fixed; top: 10px; left: 10px; background-color: rgba(211, 11, 11, 0.6);
+   color: #ccc; padding: 5px 10px; font-size: 25px; border-radius: 3px;
+   z-index: 1001; cursor: pointer;
+}
+
+/* --- Audio Controls Styling --- */
+#audio-control-container {
+   position: fixed; bottom: 20px; right: 20px; display: flex;
+   align-items: center; gap: 10px; z-index: 1000;
+}
+#song-name {
+    color: white; font-size: 14px; margin-right: 10px;
+    text-shadow: 1px 1px 2px black; /* Add shadow for readability */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Add ellipsis if name is too long */
+    max-width: 150px; /* Limit width */
+}
+
+/* Mute button needs relative positioning for slider container */
+#mute-button {
+    position: relative;
+}
+
+#volume-container {
+   position: absolute;
+   bottom: calc(100% + 8px); /* Position above the mute button + gap */
+   left: 50%; /* Center horizontally relative to mute button */
+   transform: translateX(-50%);
+   display: none; /* Handles show/hide via JS */
+   width: 24px; /* Container width */
+   height: 120px; /* Container height */
+   background: rgba(50, 50, 50, 0.8); /* Optional background */
+   border-radius: 6px;
+   padding: 5px 0; /* Vertical padding */
+   box-sizing: border-box;
+   border: 1px solid #666;
+}
+#volume-slider {
+   width: 100px; /* This is the length of the slider */
+   height: 8px;  /* Thickness of the track */
+   transform-origin: center center; /* Rotate around its own center */
+   transform: rotate(-90deg); /* Rotate to vertical */
+   position: absolute;
+   /* Position slider's center at container's center */
+   top: 56px;  /* (Container H / 2) - (Slider H / 2) -> (120/2) - (8/2) = 60 - 4 = 56px */
+   left: -38px; /* (Container W / 2) - (Slider W / 2) -> (24/2) - (100/2) = 12 - 50 = -38px */
+   cursor: pointer;
+   /* Reset default appearance */
+   appearance: none;
+   -webkit-appearance: none;
+   background: rgba(255,255,255,0.3);
+   border-radius: 4px;
+   outline: none;
+}
+/* Styling the slider thumb (cross-browser) */
+#volume-slider::-webkit-slider-thumb {
+    appearance: none; -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: #ddd; border-radius: 50%;
+    cursor: pointer; border: 1px solid #888;
+}
+#volume-slider::-moz-range-thumb {
+    width: 16px; height: 16px;
+    background: #ddd; border-radius: 50%;
+    cursor: pointer; border: none;
+}
+
+/* Common style for audio buttons */
+.audio-button {
+   background: rgba(0,0,0,0.5); color: white; border: 1px solid #555;
+   padding: 5px 10px; cursor: pointer; border-radius: 3px; font-size: 16px;
+   display: inline-flex; /* Helps with alignment */
+   align-items: center;
+   justify-content: center;
+}
+.audio-button:hover { background: rgba(255,255,255,0.2); }
+

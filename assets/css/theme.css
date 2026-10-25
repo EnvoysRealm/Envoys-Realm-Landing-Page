@@ -1,0 +1,235 @@
+/* theme.css */
+/* Title Glow & Flicker */
+.title-glow {
+    font-size: 8rem; /* Default size (large screens) */
+    line-height: 1; /* Adjust line height */
+    text-shadow: 0 0 5px rgba(255, 100, 100, 0.8),
+                 0 0 10px rgba(255, 0, 0, 0.7),
+                 0 0 18px rgba(138, 43, 226, 0.6),
+                 0 0 25px rgba(75, 0, 130, 0.5);
+    z-index: 1;
+    animation: text-flicker 3s linear infinite alternate;
+    color: #dc2626; /* text-red-600 */
+    text-align: center;
+    white-space: nowrap;
+}
+
+@keyframes text-flicker {
+    0%, 10%, 12%, 20%, 22%, 30%, 32%, 40%, 42%, 50%, 52%, 60%, 62%, 70%, 72%, 80%, 82%, 90%, 92%, 100% {
+        text-shadow: 0 0 5px rgba(255, 100, 100, 0.8), 0 0 10px rgba(255, 0, 0, 0.7), 0 0 18px rgba(138, 43, 226, 0.6), 0 0 25px rgba(75, 0, 130, 0.5);
+        opacity: 1;
+    }
+    11%, 21%, 31%, 41%, 51%, 61%, 71%, 81%, 91% {
+        text-shadow: 0 0 4px rgba(255, 100, 100, 0.6), 0 0 8px rgba(255, 0, 0, 0.5), 0 0 15px rgba(138, 43, 226, 0.4), 0 0 20px rgba(75, 0, 130, 0.3);
+        opacity: 0.95;
+    }
+}
+
+/* Pokéball Styling */
+.horror-ball-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+@keyframes wobble {
+    0%, 100% { transform: translateX(0%) rotate(0deg); }
+    15% { transform: translateX(-25px) rotate(-6deg); }
+    30% { transform: translateX(15px) rotate(6deg); }
+    45% { transform: translateX(-15px) rotate(-3.6deg); }
+    60% { transform: translateX(10px) rotate(2.4deg); }
+    75% { transform: translateX(-8px) rotate(-1.2deg); }
+}
+
+.horror-ball {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 100%, #4a4a4a, #1a1a1a);
+    border: 4px solid #111;
+    overflow: hidden;
+    position: relative;
+    animation: wobble 3s infinite both;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 2;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.6),
+                inset 0 -3px 5px rgba(0,0,0,0.4);
+}
+
+.horror-ball::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: radial-gradient(circle at 50% 0%, #6e0000, #1a0000);
+    border-bottom: 4px solid #111;
+    /* Corrected border-radius for 200px size */
+    border-radius: 100px 100px 0 0 / 100px 100px 0 0;
+    z-index: 1;
+}
+
+.horror-ball::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #555, #111);
+    border: 6px solid #222;
+    box-shadow: 0 0 0 4px #111,
+                inset 0 2px 3px rgba(0,0,0,0.5),
+                inset 0 0 8px rgba(138, 43, 226, 0.7);
+    z-index: 3;
+}
+
+.horror-ball:hover {
+     box-shadow: inset 0 5px 15px rgba(0,0,0,0.7), inset 0 -3px 5px rgba(0,0,0,0.5),
+                 0 0 10px rgba(138, 43, 226, 0.3);
+}
+
+@keyframes pokeball-shake {
+    0%, 100% { transform: translateX(0) rotate(0); }
+    15% { transform: translateX(-5px) rotate(-8deg); }
+    30% { transform: translateX(5px) rotate(8deg); }
+    45% { transform: translateX(-5px) rotate(-8deg); }
+    60% { transform: translateX(5px) rotate(8deg); }
+    75% { transform: translateX(-3px) rotate(-5deg); }
+    90% { transform: translateX(3px) rotate(5deg); }
+}
+
+
+/* Button Styling */
+.hell-button {
+    background: linear-gradient(to bottom right, #000, #111, #222);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.2s ease;
+    border: 3px solid #a33030; /* Dark Red border */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6),
+                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 8px rgba(138, 43, 226, 0.2); /* Purple glow */
+    color: rgba(255, 0, 0, 0.726); /* Red text */
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.5), /* White edge */
+                 0 0 6px rgba(255, 0, 0, 0.7), /* Red glow */
+                 0 0 10px rgba(138, 43, 226, 0.6); /* Purple glow */
+    padding: 10px 20px;
+    font-size: 2.5rem; /* Default size */
+    line-height: 1.2;
+    border-radius: 0.5rem; /* rounded-lg */
+    text-align: center;
+    display: block; /* Or inline-block */
+    width: fit-content; /* Fit content */
+    margin-left: auto; margin-right: auto; /* Centering */
+}
+
+.hell-button:hover {
+    transform: scale(1.03) translateY(-2px);
+    background: linear-gradient(to bottom right, #b91c1c, #991b1b, #6b21a8); /* Red/Purple hover */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8),
+                inset 0 2px 4px rgba(0, 0, 0, 0.4),
+                0 0 15px rgba(138, 43, 226, 0.4);
+}
+
+/* Click animation class */
+.hell-button.clicked { animation: button-click-press 0.15s ease-out; }
+@keyframes button-click-press {
+    0% { transform: scale(1.0) translateY(0px); }
+    50% { transform: scale(0.98) translateY(1px); }
+    100% { transform: scale(1.0) translateY(0px); }
+}
+.hell-button:active {
+    transform: scale(0.98) translateY(1px);
+}
+
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .title-glow {
+        font-size: 4rem; /* Smaller title */
+        line-height: 1.1;
+    }
+
+    .horror-ball-wrapper {
+        width: 150px; /* Smaller Pokéball */
+        height: 150px;
+    }
+    /* Adjust Pokéball pseudo elements for 150px */
+    .horror-ball::before {
+         border-radius: 75px 75px 0 0 / 75px 75px 0 0;
+    }
+     .horror-ball::after {
+         width: 35px; height: 35px; border: 6px solid #222;
+         box-shadow: 0 0 0 4px #111, inset 0 2px 3px rgba(0,0,0,0.5), inset 0 0 8px rgba(138, 43, 226, 0.7);
+     }
+
+
+    .hell-button {
+        font-size: 2rem; /* Smaller button text */
+        padding: 8px 16px;
+    }
+}
+
+/* --- TV Shutdown Overlay Style --- */
+#tv-shutdown-overlay {
+   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+   background-color: white; z-index: 9999; pointer-events: none;
+   opacity: 0; /* Initially hidden */
+   clip-path: inset(0% 0% 0% 0%); /* Start fully open */
+   transition: opacity 0.05s linear, clip-path 0.2s ease-in 0.05s; /* Fast flash, slightly faster close */
+}
+#tv-shutdown-overlay.active {
+    opacity: 1;
+    clip-path: inset(50% 0% 50% 0%); /* Close to horizontal line */
+}
+
+
+/* --- Audio Controls Styling --- */
+#audio-control-container {
+   position: fixed; bottom: 20px; right: 20px; display: flex;
+   align-items: center; gap: 10px; z-index: 1000;
+}
+#song-name { color: white; font-size: 14px; margin-right: 10px; text-shadow: 1px 1px 2px black; }
+
+/* Mute button needs relative positioning for slider container */
+#mute-button { position: relative; }
+
+#volume-container {
+   position: absolute; /* Position relative to mute button */
+   bottom: calc(100% + 8px); /* Place it above the mute button */
+   left: 50%; /* Center horizontally relative to mute button */
+   transform: translateX(-50%);
+   display: none; /* Initially hidden */
+   width: 20px; /* Width of the vertical container */
+   height: 120px; /* Height of the vertical container */
+   background: rgba(50, 50, 50, 0.7); /* Optional background for container */
+   border-radius: 5px;
+   padding: 10px 0; /* Padding top/bottom */
+   box-sizing: content-box;
+}
+#volume-slider {
+   width: 100px; /* This is the length of the slider */
+   height: 10px; /* Thickness of the track */
+   transform-origin: center; /* Rotate around center */
+   transform: rotate(-90deg) ; /* Rotate only */
+   position: absolute; /* Position within container */
+   top: 55px; /* Adjust vertical centering (half height - half length) */
+   left: -40px; /* Adjust horizontal centering (half width - half length) */
+   cursor: pointer; appearance: none;
+   background: rgba(255,255,255,0.3); border-radius: 5px; outline: none;
+}
+/* Styling the slider thumb */
+#volume-slider::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; background: #eee; border-radius: 50%; cursor: pointer; }
+#volume-slider::-moz-range-thumb { width: 18px; height: 18px; background: #eee; border-radius: 50%; cursor: pointer; border: none; }
+
+.audio-button { /* Common style */
+   background: rgba(0,0,0,0.5); color: white; border: 1px solid #555;
+   padding: 5px 10px; cursor: pointer; border-radius: 3px; font-size: 16px;
+}
+.audio-button:hover { background: rgba(255,255,255,0.2); }

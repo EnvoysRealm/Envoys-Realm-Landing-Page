@@ -1,0 +1,156 @@
+/* links_style.css - Updated for Shared Header */
+
+/* --- Variable Definitions (Keep if used by carousel/cards) --- */
+:root {
+    /* Keep Hues if used for card glows */
+    --hue1: 300; /* Purple-ish */
+    --hue2: 0;   /* Red-ish */
+
+    /* Keep Carousel Card Settings */
+    --card-width: 280px;
+    --card-height: 420px;
+    --card-spacing: 40px;
+    --card-glow-intensity: 0.6;
+    --card-float-distance: 8px;
+    --card-bg: rgba(15, 5, 25, 0.7);
+    --card-border-radius: 15px;
+    --card-border: 1px solid hsla(var(--hue1), 50%, 50%, 0.3);
+
+    /* Keep Animation Timing if used by cards */
+    --ease: cubic-bezier(0.5, 1, 0.89, 1);
+    --glow-animation-duration: 4s;
+    --float-animation-duration: 5s;
+
+    /* --- REMOVED Menu Variables --- */
+    /* --menu-border-width, --menu-border-color, --menu-radius, etc. */
+    /* --menu-item-hover-bg-start, --menu-item-hover-text, etc. */
+    /* --menu-transition-duration */
+}
+
+/* --- REMOVED Neon Glass Menu Styles --- */
+/* All rules targeting #menu, #menu .shine, #menu .glow, #menu li, #menu header, etc. */
+/* #menu { ... } */
+/* #menu.open { ... } */
+/* #menu .shine { ... } */
+/* #menu .glow { ... } */
+/* #menu .inner { ... } */
+/* #menu hr { ... } */
+/* #menu input { ... } */
+/* #menu label { ... } */
+/* #menu header { ... } */
+/* #menu ul { ... } */
+/* #menu li { ... } */
+/* #menu li:hover { ... } */
+/* #menu li.selected { ... } */
+/* #menu li a { ... } */
+/* @keyframes menu-glow-in { ... } */
+
+
+/* --- KEEP Carousel Styles --- */
+.carousel-container {
+    overflow: hidden;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* height: 550px; */ /* Set height via inline style or specific container */
+    padding-left: 5vw; /* Example padding */
+    box-sizing: border-box;
+}
+
+.cards-wrapper {
+    width: max-content;
+    will-change: transform;
+}
+
+.cards-container {
+    display: flex;
+    gap: var(--card-spacing);
+    padding: 50px var(--card-spacing); /* Adjust padding as needed */
+    width: max-content;
+}
+
+.card {
+    position: relative;
+    width: var(--card-width);
+    height: var(--card-height);
+    background: var(--card-bg);
+    border-radius: var(--card-border-radius);
+    border: var(--card-border);
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform, box-shadow, opacity;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    color: #d1d5db;
+}
+
+/* Card Glow and Float Animations */
+.card {
+    animation: card-float var(--float-animation-duration) ease-in-out infinite,
+               card-autonomous-glow var(--glow-animation-duration) ease-in-out infinite var(--glow-delay, 0s);
+}
+
+@keyframes card-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(calc(var(--card-float-distance) * -1)); }
+}
+
+@keyframes card-autonomous-glow {
+    0%, 100% { box-shadow: 0 0 10px hsla(var(--glow-hue, var(--hue1)), 80%, 50%, 0); }
+    50% { box-shadow: 0 0 35px hsla(var(--glow-hue, var(--hue1)), 90%, 60%, var(--card-glow-intensity)); }
+}
+
+/* Card Hover Effect */
+.card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 40px hsla(var(--glow-hue, var(--hue1)), 70%, 50%, 0.4);
+    z-index: 10;
+}
+.card:hover::before {
+    content: ""; position: absolute; inset: 0; border-radius: var(--card-border-radius);
+    background: linear-gradient(45deg, transparent, hsla(var(--hue2), 70%, 60%, 0.1), transparent);
+    opacity: 1; transition: opacity 0.3s ease; z-index: 1;
+}
+
+/* Card Content Styling */
+.card-content { padding: 1.25rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 2; overflow: hidden; }
+.card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-shrink: 0; }
+.card-icon { width: 2.5rem; height: 2.5rem; flex-shrink: 0; background-color: hsla(var(--hue1), 50%, 30%, 0.5); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: hsl(var(--hue1), 80%, 70%); overflow: hidden; }
+.card-icon svg, .card-icon img { width: 100%; height: 100%; object-fit: contain; } /* Ensure img also fits */
+.card-title { font-family: 'Pirata One', cursive; font-size: 1.75rem; color: hsl(var(--hue2), 70%, 75%); line-height: 1.2; margin: 0; text-shadow: 0 0 5px hsla(var(--hue2), 70%, 50%, 0.5); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; flex-grow: 1; }
+.card-description { font-size: 0.9rem; line-height: 1.5; color: #b0b8c4; margin-bottom: 1.25rem; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; min-height: calc(1.5em * 5); }
+.card-links { display: flex; justify-content: space-between; align-items: center; margin-top: auto; gap: 0.5rem; flex-shrink: 0; }
+.card-link, .card-github-link { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; text-decoration: none; transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; border: 1px solid transparent; flex-shrink: 0; text-align: center; white-space: nowrap; }
+.card-link svg, .card-github-link svg { width: 1em; height: 1em; flex-shrink: 0; }
+.card-link { background-color: hsla(var(--hue2), 70%, 50%, 0.2); color: hsl(var(--hue2), 80%, 80%); border-color: hsla(var(--hue2), 70%, 60%, 0.5); }
+.card-link:hover { background-color: hsla(var(--hue2), 80%, 55%, 0.4); color: #fff; border-color: hsla(var(--hue2), 70%, 70%, 0.7); box-shadow: 0 0 10px hsla(var(--hue2), 70%, 60%, 0.5); }
+.card-github-link { background-color: hsla(var(--hue1), 50%, 50%, 0.2); color: hsl(var(--hue1), 70%, 80%); border-color: hsla(var(--hue1), 50%, 60%, 0.5); }
+.card-github-link:hover { background-color: hsla(var(--hue1), 60%, 55%, 0.4); color: #fff; border-color: hsla(var(--hue1), 50%, 70%, 0.7); box-shadow: 0 0 10px hsla(var(--hue1), 50%, 60%, 0.5); }
+
+
+/* --- KEEP Cursor Light Effect --- */
+.cursor-light {
+    position: fixed; width: 400px; height: 400px;
+    background: radial-gradient(circle, hsla(var(--hue1), 80%, 70%, 0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%) translateZ(0);
+    z-index: 5; mix-blend-mode: screen; will-change: transform;
+    transition: background 0.2s ease-out;
+}
+
+/* --- KEEP Responsiveness for Carousel/Cards --- */
+@media (max-width: 768px) {
+    :root { --card-width: 240px; --card-height: 380px; --card-spacing: 20px; }
+    .cards-container { padding: 30px var(--card-spacing); }
+    .card-title { font-size: 1.5rem; }
+    .card-description { font-size: 0.85rem; -webkit-line-clamp: 4; min-height: calc(1.5em * 4); }
+    .card-link, .card-github-link { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+    .cursor-light { display: none; }
+    /* Remove menu specific responsive rules */
+    main { padding-top: 80px; } /* Keep adjustment for sticky header */
+}
+
