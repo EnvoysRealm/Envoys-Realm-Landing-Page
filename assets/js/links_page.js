@@ -14,18 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Forte Previewer",
             description: "This project is a web-based image gallery viewer with advanced features, designed to showcase images (like Pokémon TCG cards) organized in folders. It includes filtering, sorting by folder, dynamic sizing, interactive hover effects, background music, and a particle background animation.",
             icon: null,
-            iconUrl: 'https://raw.githubusercontent.com/Envoyofhell/Pocket-Image-Previewer/Forte/resources/forte-arrivals.png',
+            iconUrl: 'https://raw.githubusercontent.com/EnvoysRealm/Pocket-Image-Previewer/Forte/resources/forte-arrivals.png',
             projectUrl: "https://forte.meta-ptcg.org/", // Subdomain URL
-            githubUrl: "https://github.com/Envoyofhell",
+            githubUrl: "https://github.com/EnvoysRealm",
             glowHue: 0
         },
         {
             id: "project-2",
             title: "Meta-PTCG",
             description: "A custom Pokémon TCG simulator application designed for experimenting with non-standard Pokémon mechanics and custom cards.",
-            iconUrl: 'https://raw.githubusercontent.com/Envoyofhell/ptcg-sim-meta/refs/heads/main/client/src/assets/favicon.ico',
+            iconUrl: 'https://raw.githubusercontent.com/EnvoysRealm/ptcg-sim-meta/refs/heads/main/client/src/assets/favicon.ico',
             projectUrl: "https://meta.meta-ptcg.org/", // Subdomain URL
-            githubUrl: "https://github.com/Envoyofhell/ptcg-sim-meta",
+            githubUrl: "https://github.com/EnvoysRealm/ptcg-sim-meta",
             glowHue: 280
         },
         {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // **PATH CHECK:** Verify '/src/dex.png' is correct on Cloudflare
             iconUrl: '/src/dex.png',
             projectUrl: "https://pokedex.meta-ptcg.org/", // Subdomain URL
-            githubUrl: "https://github.com/Envoyofhell",
+            githubUrl: "https://github.com/EnvoysRealm",
             glowHue: 330
         },
         {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
              // **PATH CHECK:** Verify '/src/ball.png' is correct on Cloudflare
             iconUrl: '/src/ball.png',
             projectUrl: "https://ballsdex.meta-ptcg.org/", // Subdomain URL
-            githubUrl: "https://github.com/Envoyofhell",
+            githubUrl: "https://github.com/EnvoysRealm",
             glowHue: 210
         },
         {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
              // **PATH CHECK:** Verify '/src/egg.png' is correct on Cloudflare
             iconUrl: '/src/egg.png',
             projectUrl: "https://clicker.meta-ptcg.org/", // Subdomain URL
-            githubUrl: "https://github.com/Envoyofhell",
+            githubUrl: "https://github.com/EnvoysRealm",
             glowHue: 300
         },
          {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             description: "This is an interactive web application featuring multiple calculators or visualizers presented in a tabbed interface, enhanced with dynamic effects, themed styling, and a bubble wrap clicker mini-game.",
             iconUrl: 'https://i.pinimg.com/474x/fd/a4/b7/fda4b72909472b12602bd9c26c0c0cdc.jpg',
             projectUrl: "https://envoyofhell.github.io/Pi-Calculator/", // External URL
-            githubUrl: "https://github.com/Envoyofhell/Pi-Calculator",
+            githubUrl: "https://github.com/EnvoysRealm/Pi-Calculator",
             glowHue: 260
         },
     ];
